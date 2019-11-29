@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Permisos</string>
+    <string name="action_settings">Settings</string>
+    <string name="button">Button</string>
+    <string name="camara">Camara</string>
+    <string name="llamada">Llamada</string>
+</resources>
