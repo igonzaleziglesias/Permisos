@@ -4,4 +4,8 @@
     <string name="button">Button</string>
     <string name="camara">Camara</string>
     <string name="llamada">Llamada</string>
+    <string name="todo">TODO</string>
+    <string name="recuperar">recuperar</string>
+    <string name="ver">ver</string>
+    <string name="name">name</string>
 </resources>

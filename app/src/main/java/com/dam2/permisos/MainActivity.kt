@@ -1,22 +1,36 @@
 package com.dam2.permisos
 
 import android.Manifest
+import android.Manifest.permission.CAMERA
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.icu.text.SimpleDateFormat
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.makeCall
 import org.jetbrains.anko.toast
+import java.io.File
+import java.io.IOException
+import java.util.*
 
+
+const val PERMISSION_REQUEST_CODE=1
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         permiso.setOnClickListener{camera(it)}
         permiso2.setOnClickListener{llamar(it)}
+
 
 
     }
@@ -57,6 +72,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
+    val REQUEST_IMAGE_CAPTURE = 1
+
     private fun camera(it: View?){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
             != PackageManager.PERMISSION_GRANTED) {
@@ -72,15 +91,27 @@ class MainActivity : AppCompatActivity() {
                     arrayOf(Manifest.permission.CAMERA),
                     1)
             } else {
-                toast("RECHAZADO POR SIEMPRE")
+                toast("RECHAZADO")
 
             }
         } else {
             toast("ya permitido!")
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(intent,0)
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                takePictureIntent.resolveActivity(packageManager)?.also {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                }
+            }
         }
     }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            imagen.setImageBitmap(imageBitmap)
+        }
+    }
+
 
 
 
