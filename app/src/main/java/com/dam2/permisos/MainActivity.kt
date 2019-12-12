@@ -39,15 +39,15 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-    private fun llamar(it: View?) {
+    private fun llamar(it: View?) {//permiso para llamar
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
-            != PackageManager.PERMISSION_GRANTED
+            != PackageManager.PERMISSION_GRANTED//permiso denegado
         ) {
             // Permission is not granted
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this,
-                    Manifest.permission.CALL_PHONE)) {
+                    Manifest.permission.CALL_PHONE)) {//permiso permitido
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
@@ -58,11 +58,11 @@ class MainActivity : AppCompatActivity() {
                     2
                 )
             } else {
-                toast("RECHAZADO POR SIEMPRE")
+                toast("RECHAZADO")//bloqueado por defecto, permitir desde ajustes y volver a desactivar
 
             }
         } else {
-            makeCall("112")
+            makeCall("112")//llamada por defecto
         }
     }
 
@@ -70,13 +70,13 @@ class MainActivity : AppCompatActivity() {
 
     val REQUEST_IMAGE_CAPTURE = 1
 
-    private fun camera(it: View?){
+    private fun camera(it: View?){//permiso para usar la camara
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            != PackageManager.PERMISSION_GRANTED) {
+            != PackageManager.PERMISSION_GRANTED) {//permiso denegado
             // Permission is not granted
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.CAMERA)) {
+                    Manifest.permission.CAMERA)) {//permiso permitido
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
@@ -85,11 +85,11 @@ class MainActivity : AppCompatActivity() {
                     arrayOf(Manifest.permission.CAMERA),
                     1)
             } else {
-                toast("RECHAZADO")
+                toast("RECHAZADO")//bloqueado por defecto, permitir desde ajustes y volver a desactivar
 
             }
         } else {
-            toast("ya permitido!")
+            toast("ya permitido!") //permiso ya dado
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                 takePictureIntent.resolveActivity(packageManager)?.also {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {//obtenemos la imagen y la metemos en el imagenview
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             imagen.setImageBitmap(imageBitmap)
